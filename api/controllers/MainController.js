@@ -13,16 +13,17 @@ module.exports = {
         var username = req.param("username");
         var password = req.param("password");
 
-        Users.find(username).done(function(err, usr){
+        Users.findOne({"username": username}).exec(function(err, usr){
             if (err) {
                 res.send(500, { error: "DB Error" });
-            } else if (usr) {
+            } else if (usr != undefined) {
+                console.log("In the error, what is it? " + usr);
                 res.send(400, {error: "Username already Taken"});
             } else {
                 var hasher = require("password-hash");
                 password = hasher.generate(password);
 
-                Users.create({username: username, password: password}).done(function(error, user) {
+                Users.create({username: username, password: password}).exec(function(error, user) {
                     if (error) {
                         res.send(500, {error: "DB Error"});
                     } else {
@@ -37,11 +38,11 @@ module.exports = {
         var username = req.param("username");
         var password = req.param("password");
 
-        Users.findByUsername(username).done(function(err, usr) {
+        Users.findOne({"username": username}).exec(function(err, usr) {
             if (err) {
                 res.send(500, { error: "DB Error" });
             } else {
-                if (usr) {
+                if (usr != undefined) {
                     var hasher = require("password-hash");
                     if (hasher.verify(password, usr.password)) {
                         req.session.user = usr;

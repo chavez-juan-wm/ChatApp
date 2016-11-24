@@ -9,16 +9,13 @@ module.exports = {
 
   attributes: {
     userId: {
-      type: 'integer',
-      required: true
+      type: 'int'
     },
     username: {
-      type: 'text',
-      required: true
+      type: 'string'
     },
     message: {
-      type: 'text',
-      required: true
+      type: 'string'
     }
   }
 };
