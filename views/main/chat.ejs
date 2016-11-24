@@ -21,12 +21,6 @@
     var messages = new MessageCollection();
     messages.fetch();
 
-    $("#postMessageButton").click(function(){
-        var messageText = $("#message").val();
-        messages.create({message: messageText});
-        $("#message").val("");
-    });
-
     _.templateSettings = {
         interpolate : /\{\{(.+?)\}\}/g
     };
@@ -37,12 +31,20 @@
             this.collection.on('add', this.render, this);
             this.render();
         },
-        template: _.template("<div><p>{{ message }}</p></div>"),
+        template: _.template("<div><p><b>{{ username }}: </b>{{ message }}</p></div>"),
         render: function () {
             this.$el.html("");
             this.collection.each(function(msg){
                 this.$el.append(this.template(msg.toJSON()));
             }, this)
         }
+    });
+
+    var mView = new MessagesView({collection: messages});
+
+    $("#postMessageButton").click(function(){
+        var messageText = $("#message").val();
+        messages.create({message: messageText});
+        $("#message").val("");
     });
 </script>
